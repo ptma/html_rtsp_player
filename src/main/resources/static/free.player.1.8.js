@@ -19,11 +19,11 @@ class Logger {
         this.tag = tag;
         this.setLevel(level);
     }
-    
+
     setLevel(level) {
         this.level = level;
     }
-    
+
     static get level_map() { return {
         [LogLevel.Debug]:'log',
         [LogLevel.Log]:'log',
@@ -943,8 +943,6 @@ class MSEBuffer {
                     this.doCleanup();
                     return;
                 }
-            } else {
-                // Log.debug(`buffered: ${this.sourceBuffer.buffered.end(0)}, current ${this.players[0].currentTime}`);
             }
             this.feedNext();
         });
@@ -1339,9 +1337,9 @@ class BaseRemuxer {
     static toMS(timestamp) {
         return timestamp/90;
     }
-    
+
     setConfig(config) {
-        
+
     }
 
     insertDscontinuity() {
@@ -1463,7 +1461,7 @@ class AACRemuxer extends BaseRemuxer {
             this.mp4track.len += aac.getSize();
         }
     }
-    
+
     getPayload() {
         if (!this.readyToDecode || !this.samples.length) return null;
         this.samples.sort(function(a, b) {
@@ -1539,7 +1537,6 @@ class AACRemuxer extends BaseRemuxer {
 /**
  * Parser for exponential Golomb codes, a variable-bitwidth number encoding scheme used by h264.
 */
-// TODO: asm.js
 class ExpGolomb {
 
   constructor(data) {
@@ -1668,7 +1665,7 @@ class ExpGolomb {
     // ():int
   readUInt() {
     return this.readBits(32);
-  }  
+  }
 }
 
 // TODO: asm.js
@@ -1679,8 +1676,6 @@ function appendByteArray(buffer1, buffer2) {
     tmp.set(buffer2, buffer1.byteLength|0);
     return tmp;
 }
-
-
 function base64ToArrayBuffer(base64) {
     var binary_string =  window.atob(base64);
     var len = binary_string.length;
@@ -1699,8 +1694,6 @@ function hexToByteArray(hex) {
     }
     return bufView;
 }
-
-
 
 function bitSlice(bytearray, start=0, end=bytearray.byteLength*8) {
     let byteLen = Math.ceil((end-start)/8);
@@ -1768,7 +1761,7 @@ class BitArray {
             return this.bytepos-this.src.byteLength-this.src.bitpos;
         }
     }
-    
+
     finished() {
         return this.bytepos >= this.src.byteLength;
     }
@@ -1891,7 +1884,7 @@ class H264Parser {
 
     parseNAL(unit) {
         if (!unit) return false;
-        
+
         let push = null;
         // console.log(unit.toString());
         switch (unit.type()) {
@@ -2143,7 +2136,7 @@ class H264Parser {
     }
 }
 
-const Log$4 = getTagged("remuxer:h264"); 
+const Log$4 = getTagged("remuxer:h264");
 // TODO: asm.js
 class H264Remuxer extends BaseRemuxer {
 
@@ -2265,7 +2258,7 @@ class H264Remuxer extends BaseRemuxer {
             }
 
             let unit = sample.unit;
-            
+
             pts = sample.pts- this.initDTS; // /*Math.round(*/(sample.pts - this.initDTS)/*/this.tsAlign)*this.tsAlign*/;
             dts = sample.dts - this.initDTS; ///*Math.round(*/(sample.dts - this.initDTS)/*/this.tsAlign)*this.tsAlign*/;
             // ensure DTS is not bigger than PTS
@@ -2496,7 +2489,7 @@ class Remuxer {
             //this.mse.play();
             this.enabled = true;
         });
-        
+
     }
 
     initMSE(track_type, codec) {
@@ -2530,7 +2523,6 @@ class Remuxer {
                 this.eventSource.dispatchEvent('ready');
             }
         } else {
-
             for (let track_type in this.tracks) {
                 let track = this.tracks[track_type];
                 let pay = track.getPayload();
@@ -3444,7 +3436,7 @@ class RTP {
     isVideo(){return this.media.type == 'video';}
     isAudio(){return this.media.type == 'audio';}
 
-    
+
 }
 
 class RTPFactory {
@@ -3802,9 +3794,9 @@ class BaseClient {
     }
 
     static streamType() {
-        return null;    
+        return null;
     }
-    
+
     destroy() {
         this.detachTransport();
     }
@@ -4026,11 +4018,8 @@ class RTSPSession {
     }
 }
 
-// import {RTP} from './rtp/rtp';
 const LOG_TAG$4 = "client:rtsp";
 const Log$9 = getTagged(LOG_TAG$4);
-
-
 
 class RTSPClient extends BaseClient {
     constructor(options={flush: 200}) {
@@ -4042,7 +4031,7 @@ class RTSPClient extends BaseClient {
         };
         this.sampleQueues={};
     }
-    
+
     static streamType() {
         return 'rtsp';
     }
@@ -4579,7 +4568,7 @@ class RTSPClientSM extends StateMachine {
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -4591,9 +4580,9 @@ class RTSPClientSM extends StateMachine {
 /*jshint browser: true, strict: true, immed: true, latedef: true, undef: true, regexdash: false */
 /*global oids */
 
-var hardLimit = 100;
-var ellipsis = "\u2026";
-var DOM = {
+var hardLimit = 100,
+	ellipsis = "\u2026",
+	DOM = {
         tag: function (tagName, className) {
             var t = document.createElement(tagName);
             t.className = className;
@@ -5176,8 +5165,7 @@ ASN1.test = function () {
         {value: [0x83, 0xFE, 0xDC, 0xBA], expected: 0xFEDCBA}
     ];
     for (var i = 0, max = test.length; i < max; ++i) {
-        var pos = 0,
-            stream = new Stream(test[i].value, 0),
+        var stream = new Stream(test[i].value, 0),
             res = ASN1.decodeLength(stream);
         if (res != test[i].expected)
             document.write("In test[" + i + "] expected " + test[i].expected + " got " + res + "\n");
@@ -5313,10 +5301,6 @@ SecureRandom.prototype.nextBytes = rng_get_bytes;
 // Bits per digit
 var dbits;
 
-// JavaScript engine analysis
-var canary = 0xdeadbeefcafe;
-var j_lm = ((canary&0xffffff)==0xefcafe);
-
 // (public) Constructor
 class BigInteger {
   constructor(a,b,c) {
@@ -5375,11 +5359,11 @@ function am3(i,x,w,j,c,n) {
   }
   return c;
 }
-if(j_lm && (navigator.appName == "Microsoft Internet Explorer")) {
+if(navigator.appName == "Microsoft Internet Explorer") {
   BigInteger.prototype.am = am2;
   dbits = 30;
 }
-else if(j_lm && (navigator.appName != "Netscape")) {
+else if(navigator.appName != "Netscape") {
   BigInteger.prototype.am = am1;
   dbits = 26;
 }
@@ -5400,8 +5384,7 @@ BigInteger.prototype.F2 = 2*dbits-BI_FP;
 // Digit conversions
 var BI_RM = "0123456789abcdefghijklmnopqrstuvwxyz";
 var BI_RC = [];
-var rr;
-var vv;
+var rr,vv;
 rr = "0".charCodeAt(0);
 for(vv = 0; vv <= 9; ++vv) BI_RC[rr++] = vv;
 rr = "a".charCodeAt(0);
@@ -5874,14 +5857,6 @@ BigInteger.ZERO = nbv(0);
 BigInteger.ONE = nbv(1);
 
 // Copyright (c) 2005-2009  Tom Wu
-// All Rights Reserved.
-// See "LICENSE" for details.
-
-// Extended JavaScript BN functions, required for RSA private ops.
-
-// Version 1.1: new BigInteger("0", 10) returns "proper" zero
-// Version 1.2: square() API, isProbablePrime fix
-
 // (public)
 function bnClone() { var r = nbi(); this.copyTo(r); return r; }
 
@@ -6532,8 +6507,6 @@ BigInteger.prototype.square = bnSquare;
 
 // Version 1.1: support utf-8 encoding in pkcs1pad2
 
-// convert a (hex) string to a bignum object
-
 function parseBigInt(str,r) {
   return new BigInteger(str,r);
 }
@@ -6628,8 +6601,6 @@ RSAKey.prototype.encrypt = RSAEncrypt;
 //RSAKey.prototype.encrypt_b64 = RSAEncryptB64;
 
 // Version 1.1: support utf-8 decoding in pkcs1unpad2
-
-// Undo PKCS#1 (type 2, random) padding and, if valid, return the plaintext
 
 function pkcs1unpad2(d,n) {
   var b = d.toByteArray();
@@ -6765,7 +6736,7 @@ RSAKey.prototype.decrypt = RSADecrypt;
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -6846,7 +6817,7 @@ Base64.unarmor = function (a) {
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
 // copyright notice and this permission notice appear in all copies.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
 // WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -6905,10 +6876,7 @@ Hex.decode = function(a) {
 const JSX = /*window.JSX || */{};
 JSX.env = JSX.env || {};
 
-var L = JSX;
-var OP = Object.prototype;
-var FUNCTION_TOSTRING = '[object Function]';
-var ADD = ["toString", "valueOf"];
+var L = JSX, OP = Object.prototype, FUNCTION_TOSTRING = '[object Function]',ADD = ["toString", "valueOf"];
 
 JSX.env.parseUA = function(agent) {
 
@@ -7088,7 +7056,7 @@ JSX.extend = function(subc, superc, overrides) {
  * This software is licensed under the terms of the MIT License.
  * http://kjur.github.com/jsrsasign/license
  *
- * The above copyright and license notice shall be 
+ * The above copyright and license notice shall be
  * included in all copies or substantial portions of the Software.
  */
 
@@ -7101,17 +7069,17 @@ JSX.extend = function(subc, superc, overrides) {
  * @license <a href="http://kjur.github.io/jsrsasign/license/">MIT License</a>
  */
 
-/** 
+/**
  * kjur's class library name space
  * <p>
  * This name space provides following name spaces:
  * <ul>
  * <li>{@link KJUR.asn1} - ASN.1 primitive hexadecimal encoder</li>
  * <li>{@link KJUR.asn1.x509} - ASN.1 structure for X.509 certificate and CRL</li>
- * <li>{@link KJUR.crypto} - Java Cryptographic Extension(JCE) style MessageDigest/Signature 
+ * <li>{@link KJUR.crypto} - Java Cryptographic Extension(JCE) style MessageDigest/Signature
  * class and utilities</li>
  * </ul>
- * </p> 
+ * </p>
  * NOTE: Please ignore method summary and document of this namespace. This caused by a bug of jsdoc2.
   * @name KJUR
  * @namespace kjur's class library name space
@@ -7123,8 +7091,8 @@ const KJUR = {};
  * kjur's ASN.1 class library name space
  * <p>
  * This is ITU-T X.690 ASN.1 DER encoder class library and
- * class structure and methods is very similar to 
- * org.bouncycastle.asn1 package of 
+ * class structure and methods is very similar to
+ * org.bouncycastle.asn1 package of
  * well known BouncyCaslte Cryptography Library.
  *
  * <h4>PROVIDING ASN.1 PRIMITIVES</h4>
@@ -7225,8 +7193,8 @@ KJUR.asn1.ASN1Util = new function() {
 	var dataB64 = CryptoJS.enc.Base64.stringify(dataWA);
 	var pemBody = dataB64.replace(/(.{64})/g, "$1\r\n");
         pemBody = pemBody.replace(/\r\n$/, '');
-	return "-----BEGIN " + pemHeader + "-----\r\n" + 
-               pemBody + 
+	return "-----BEGIN " + pemHeader + "-----\r\n" +
+               pemBody +
                "\r\n-----END " + pemHeader + "-----\r\n";
     };
 };
@@ -7337,6 +7305,14 @@ KJUR.asn1.ASN1Object = function() {
  */
 KJUR.asn1.DERAbstractString = function(params) {
     KJUR.asn1.DERAbstractString.superclass.constructor.call(this);
+
+	/**
+     * get string value of this string object
+     * @name getString
+     * @memberOf KJUR.asn1.DERAbstractString
+     * @function
+     * @return {String} string value of this string object
+     */
     this.getString = function() {
 	return this.s;
     };
@@ -7396,6 +7372,8 @@ JSX.extend(KJUR.asn1.DERAbstractString, KJUR.asn1.ASN1Object);
  */
 KJUR.asn1.DERAbstractTime = function(params) {
     KJUR.asn1.DERAbstractTime.superclass.constructor.call(this);
+
+	// --- PRIVATE METHODS --------------------
     this.localDateToUTC = function(d) {
 	utc = d.getTime() + (d.getTimezoneOffset() * 60000);
 	var utcDate = new Date(utc);
@@ -7482,7 +7460,15 @@ JSX.extend(KJUR.asn1.DERAbstractTime, KJUR.asn1.ASN1Object);
  */
 KJUR.asn1.DERAbstractStructured = function(params) {
     KJUR.asn1.DERAbstractString.superclass.constructor.call(this);
-    this.setByASN1ObjectArray = function(asn1ObjectArray) {
+
+    /**
+     * set value by array of ASN1Object
+     * @name setByASN1ObjectArray
+     * @memberOf KJUR.asn1.DERAbstractStructured
+     * @function
+     * @param {array} asn1ObjectArray array of ASN1Object to set
+     */
+	this.setByASN1ObjectArray = function(asn1ObjectArray) {
 	this.hTLV = null;
 	this.isModified = true;
 	this.asn1Array = asn1ObjectArray;
@@ -7614,7 +7600,7 @@ JSX.extend(KJUR.asn1.DERInteger, KJUR.asn1.ASN1Object);
  * @name KJUR.asn1.DERBitString
  * @class class for ASN.1 DER encoded BitString primitive
  * @extends KJUR.asn1.ASN1Object
- * @description 
+ * @description
  * <br/>
  * As for argument 'params' for constructor, you can specify one of
  * following properties:
@@ -7667,7 +7653,7 @@ KJUR.asn1.DERBitString = function(params) {
      * @function
      * @param {String} binaryString binary value string (i.e. '10111')
      * @description
-     * Its unused bits will be calculated automatically by length of 
+     * Its unused bits will be calculated automatically by length of
      * 'binaryValue'. <br/>
      * NOTE: Trailing zeros '0' will be ignored.
      */
@@ -7683,7 +7669,7 @@ KJUR.asn1.DERBitString = function(params) {
 	    var b = binaryString.substr(i, 8);
 	    var x = parseInt(b, 2).toString(16);
 	    if (x.length == 1) x = '0' + x;
-	    h += x;  
+	    h += x;
 	}
 	this.hTLV = null;
 	this.isModified = true;
@@ -8156,13 +8142,13 @@ JSX.extend(KJUR.asn1.DERSet, KJUR.asn1.DERAbstractStructured);
  * @description
  * <br/>
  * Parameter 'tagNoNex' is ASN.1 tag(T) value for this object.
- * For example, if you find '[1]' tag in a ASN.1 dump, 
+ * For example, if you find '[1]' tag in a ASN.1 dump,
  * 'tagNoHex' will be 'a1'.
  * <br/>
  * As for optional argument 'params' for constructor, you can specify *ANY* of
  * following properties:
  * <ul>
- * <li>explicit - specify true if this is explicit tag otherwise false 
+ * <li>explicit - specify true if this is explicit tag otherwise false
  *     (default is 'true').</li>
  * <li>tag - specify tag (default is 'a0' which means [0])</li>
  * <li>obj - specify ASN1Object which is tagged</li>
@@ -8282,8 +8268,6 @@ function b64tohex(s) {
     ret += int2char(slop << 2);
   return ret;
 }
-
-// convert a base64 string to a byte/number array
 
 /**
  * Retrieve the hexadecimal value (as a string) of the current ASN.1 element
@@ -8795,7 +8779,7 @@ class BaseTransport {
     static canTransfer(stream_type) {
         return BaseTransport.streamTypes().includes(stream_type);
     }
-    
+
     static streamTypes() {
         return [];
     }
@@ -8839,11 +8823,10 @@ class BaseTransport {
 }
 
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
 //navigator.hardwareConcurrency || 3;
 
 const LOG_TAG$5 = "transport:ws";
-const Log$10 = getTagged(LOG_TAG$5);
+const Log$a = getTagged(LOG_TAG$5);
 class WebsocketTransport extends BaseTransport {
     constructor(endpoint, stream_type, options={
         socket:`${location.protocol.replace('http', 'ws')}//${location.host}/ws/`,
@@ -9017,17 +9000,17 @@ class WebSocketProxy {
     }
 
     close() {
-        Log$10.log('closing connection');
+        Log$a.log('closing connection');
         return new Promise((resolve)=>{
             this.ctrlChannel.onclose = ()=>{
                 if (this.dataChannel) {
                     this.dataChannel.onclose = ()=>{
-                        Log$10.log('closed');
+                        Log$a.log('closed');
                         resolve();
                     };
                     this.dataChannel.close();
                 } else {
-                    Log$10.log('closed');
+                    Log$a.log('closed');
                     resolve();
                 }
             };
@@ -9047,17 +9030,17 @@ class WebSocketProxy {
 
     initDataChannel(channel_id) {
         return new Promise((resolve, reject)=>{
-            this.dataChannel = new WebSocket(this.url + "/rtp");
+            this.dataChannel = new WebSocket(this.url +  WebSocketProxy.CHN_DATA);
             this.dataChannel.binaryType = 'arraybuffer';
             this.dataChannel.onopen = ()=>{
                 let msg = this.builder.build(WSPProtocol.CMD_JOIN, {
                     channel: channel_id
                 });
-                Log$10.debug(msg);
+                Log$a.debug(msg);
                 this.dataChannel.send(msg);
             };
             this.dataChannel.onmessage = (ev)=>{
-                Log$10.debug(`[data]\r\n${ev.data}`);
+                Log$a.debug(`[data]\r\n${ev.data}`);
                 let res = WSPProtocol.parse(ev.data);
                 if (!res) {
                     return reject();
@@ -9072,11 +9055,11 @@ class WebSocketProxy {
                 resolve();
             };
             this.dataChannel.onerror = (e)=>{
-                Log$10.error(`[data] ${e.type}`);
+                Log$a.error(`[data] ${e.type}`);
                 this.dataChannel.close();
             };
             this.dataChannel.onclose = (e)=>{
-                Log$10.error(`[data] ${e.type}. code: ${e.code}, reason: ${e.reason || 'unknown reason'}`);
+                Log$a.error(`[data] ${e.type}. code: ${e.code}, reason: ${e.reason || 'unknown reason'}`);
                 this.onDisconnect(e);
             };
         });
@@ -9085,7 +9068,7 @@ class WebSocketProxy {
     connect() {
         this.encryptionKey = null;
         return new Promise((resolve, reject)=>{
-            this.ctrlChannel = new WebSocket(this.url + "/rtsp");
+            this.ctrlChannel = new WebSocket(this.url + WebSocketProxy.CHN_CONTROL);
 
             this.connected = false;
 
@@ -9102,12 +9085,12 @@ class WebSocketProxy {
                     });
                 }
                 let msg = this.builder.build(WSPProtocol.CMD_INIT, headers);
-                Log$10.debug(msg);
+                Log$a.debug(msg);
                 this.ctrlChannel.send(msg);
             };
 
             this.ctrlChannel.onmessage = (ev)=>{
-                Log$10.debug(`[ctrl]\r\n${ev.data}`);
+                Log$a.debug(`[ctrl]\r\n${ev.data}`);
 
                 let res = WSPProtocol.parse(ev.data);
                 if (!res) {
@@ -9115,12 +9098,12 @@ class WebSocketProxy {
                 }
 
                 if (res.code >= 300) {
-                    Log$10.error(`[ctrl]\r\n${res.code}: ${res.msg}`);
+                    Log$a.error(`[ctrl]\r\n${res.code}: ${res.msg}`);
                     return reject();
                 }
                 this.ctrlChannel.onmessage = (e)=> {
                     let res = WSPProtocol.parse(e.data);
-                    Log$10.debug(`[ctrl]\r\n${e.data}`);
+                    Log$a.debug(`[ctrl]\r\n${e.data}`);
                     if (res.data.seq in this.awaitingPromises) {
                         if (res.code < 300) {
                             this.awaitingPromises[res.data.seq].resolve(res);
@@ -9139,11 +9122,11 @@ class WebSocketProxy {
             };
 
             this.ctrlChannel.onerror = (e)=>{
-                Log$10.error(`[ctrl] ${e.type}`);
+                Log$a.error(`[ctrl] ${e.type}`);
                 this.ctrlChannel.close();
             };
             this.ctrlChannel.onclose = (e)=>{
-                Log$10.error(`[ctrl] ${e.type}. code: ${e.code} ${e.reason || 'unknown reason'}`);
+                Log$a.error(`[ctrl] ${e.type}. code: ${e.code} ${e.reason || 'unknown reason'}`);
                 this.onDisconnect(e);
             };
         });
@@ -9177,13 +9160,13 @@ class WebSocketProxy {
             promise: new Promise((resolve, reject)=>{
                 this.awaitingPromises[data.seq] = {resolve, reject};
                 let msg = this.builder.build(WSPProtocol.CMD_WRAP, data, payload);
-                Log$10.debug(msg);
+                Log$a.debug(msg);
                 this.ctrlChannel.send(this.encrypt(msg));
             })};
     }
 }
 
-const Log$11 = getTagged('wsp');
+const Log$b = getTagged('wsp');
 
 class StreamType$1 {
     static get HLS() {return 'hls';}
@@ -9256,10 +9239,10 @@ class WSPlayer {
                     transport: transport
                 };
             } else {
-                Log$11.warn(`Client stream type ${client.streamType()} is incompatible with transport types [${transport.streamTypes().join(', ')}]. Skip`);
+                Log$b.warn(`Client stream type ${client.streamType()} is incompatible with transport types [${transport.streamTypes().join(', ')}]. Skip`);
             }
         }
-        
+
         this.type = StreamType$1.RTSP;
         this.url = null;
         if (opts.url && opts.type) {

@@ -22,8 +22,11 @@ public class HtmlRtspPlayerApplication implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(handlerRtsp(), "/player/rtsp").setAllowedOrigins("*").addInterceptors(new WebSocketHandshakeInterceptor());
-        registry.addHandler(handlerRtp(), "/player/rtp").setAllowedOrigins("*").addInterceptors(new WebSocketHandshakeInterceptor());
+        // ctrlChannel
+        registry.addHandler(handlerRtsp(), "/player/control").setAllowedOrigins("*").addInterceptors(new WebSocketHandshakeInterceptor());
+
+        // dataChannel
+        registry.addHandler(handlerRtp(), "/player/data").setAllowedOrigins("*").addInterceptors(new WebSocketHandshakeInterceptor());
     }
 
     public static void main(String[] args) {

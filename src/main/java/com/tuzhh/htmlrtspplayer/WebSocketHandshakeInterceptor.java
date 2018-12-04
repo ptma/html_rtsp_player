@@ -18,18 +18,19 @@ public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
             ServletServerHttpResponse servletResponse = (ServletServerHttpResponse) response;
             String protocol = request.getHeaders().getFirst("Sec-WebSocket-Protocol");
-            if(!StringUtils.isEmpty(protocol))
-                response.getHeaders().set("Sec-WebSocket-Protocol",protocol);
+            if (!StringUtils.isEmpty(protocol)) {
+                response.getHeaders().set("Sec-WebSocket-Protocol", protocol);
+            }
 
             HttpSession session = servletRequest.getServletRequest().getSession(false);
             if (session != null) {
-                //session.setAttribute(Constants.Content);
-                //session.setAttribute(Constants.Encod);
-                //String userName = (String) session.getAttribute(Constants.SESSION_USERNAME);
-                //attributes.put(Constants.WEBSOCKET_USERNAME,userName);
-                }
+                // session.setAttribute(Constants.Content);
+                // session.setAttribute(Constants.Encod);
+                // String userName = (String) session.getAttribute(Constants.SESSION_USERNAME);
+                // attributes.put(Constants.WEBSOCKET_USERNAME,userName);
             }
-            return true;
+        }
+        return true;
     }
 
     @Override

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Streamedian HTML5 RTSP player</title>
+    <title>HTML5 RTSP player</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <style>
         body {
@@ -37,7 +37,7 @@
 </head>
 <body>
 <div>
-    <input id="stream_url" size="36" value="rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov">
+    <input id="stream_url" size="36" value="rtsp://218.108.74.34:8554/b38bca27-0dd7-11e5-bc08-b083feec689b">
     <button id="set_new_url" onclick = "set_url(new_url)">Set</button>
 </div>
 <div>
@@ -54,7 +54,7 @@
 		var text = document.getElementById('stream_url').value;
 	    url = text;
 		test_video.src = url;
-		Streamedian.player('test_video', {socket:"ws://127.0.0.1:9000/player"});
+		Streamedian.player('test_video', {socket:"ws://192.168.1.66:9000/player/"});
 		var player = document.getElementById('test_video');
 	}
 </script>
