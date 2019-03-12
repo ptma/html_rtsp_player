@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Videojs RTSP player</title>
+    <link rel="stylesheet" href="videojs/video-js.min.css">
+    <script src="videojs/video.js"></script>
+    <script src="videojs.ws.js"></script>
+</head>
+<body>
+
+<video id="player" class="video-js vjs-default-skin" height="360" width="640" controls preload="none" autoplay>
+    <source src="rtsp://218.108.74.34:8554/b38bca27-0dd7-11e5-bc08-b083feec689b" type="application/x-rtsp">
+</video>
+<script>
+    var player = videojs('#player',{
+        rtsp_config:{
+            websocket_url:"ws://192.168.1.66:9000/player/"
+        }
+    })
+</script>
+</body>
+</html>
