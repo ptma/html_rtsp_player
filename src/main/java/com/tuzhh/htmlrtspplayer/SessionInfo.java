@@ -50,46 +50,51 @@ public class SessionInfo {
     public void setRemoteRtspService(RemoteRtspService remoteRtspService) {
         this.remoteRtspService = remoteRtspService;
     }
+
     public void close() {
-        if(localRtspService != null) localRtspService.close();
-        if(remoteRtspService != null) remoteRtspService.close();
+        if (localRtspService != null) localRtspService.close();
+        if (remoteRtspService != null) remoteRtspService.close();
         hsmpChannel2SessionInfo.remove(channel);
     }
+
     public String getChannel() {
         return channel;
     }
 
     public SessionInfo() {
-        channel = Integer.toString(channelSeq ++);
+        channel = Integer.toString(channelSeq++);
         synchronized (hsmpChannel2SessionInfo) {
             hsmpChannel2SessionInfo.put(channel, this);
         }
     }
 
-    private LocalRtspService localRtspService = null;
-    private RemoteRtspService remoteRtspService = null;
-    private String redirectUrl = null;
-    private String url = null;
-    private String host = null;
-    private int port = 0;
+    private LocalRtspService                          localRtspService        = null;
+    private RemoteRtspService                         remoteRtspService       = null;
+    private String                                    redirectUrl             = null;
+    private String                                    url                     = null;
+    private String                                    host                    = null;
+    private int                                       port                    = 0;
 
-    private String channel = null;
+    private String                                    channel                 = null;
 
-    private final static HashMap<String,SessionInfo> hsmpSessionInfo = new HashMap<String,SessionInfo>();
-    private final static HashMap<String,SessionInfo> hsmpChannel2SessionInfo = new HashMap<String,SessionInfo>();
-    private static int channelSeq = 0;
+    private final static HashMap<String, SessionInfo> hsmpSessionInfo         = new HashMap<String, SessionInfo>();
+    private final static HashMap<String, SessionInfo> hsmpChannel2SessionInfo = new HashMap<String, SessionInfo>();
+    private static int                                channelSeq              = 0;
 
     public static SessionInfo getByChannel(String channel) {
         synchronized (hsmpChannel2SessionInfo) {
             return hsmpChannel2SessionInfo.get(channel);
         }
     }
-    public static void add(String sessionId,SessionInfo sessionInfo) {
-        hsmpSessionInfo.put(sessionId,sessionInfo);
+
+    public static void add(String sessionId, SessionInfo sessionInfo) {
+        hsmpSessionInfo.put(sessionId, sessionInfo);
     }
+
     public static void remove(String sessionId) {
         hsmpSessionInfo.remove(sessionId);
     }
+
     public static SessionInfo get(String sessionId) {
         return hsmpSessionInfo.get(sessionId);
     }

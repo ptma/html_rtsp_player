@@ -15,6 +15,7 @@ public class HtmlRtspPlayerApplication implements WebSocketConfigurer {
     public WebSockerServerRtspHandler handlerRtsp() {
         return new WebSockerServerRtspHandler();
     }
+
     @Bean
     public WebSockerServerRtpHandler handlerRtp() {
         return new WebSockerServerRtpHandler();
